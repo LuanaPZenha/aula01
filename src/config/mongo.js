@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 async function connectionMongoDB() {
     try {
         // No Docker, o host deve ser o nome do serviço definido no docker-compose (mongodb)
-        // A porta interna do container mongo é 27017, mesmo que a externa seja 27019
+        // O nome do banco agora é 'loja_de_carros' para combinar com o mysql
         const mongoURI = process.env.MONGO_URI || 'mongodb://mongodb:27017/loja_de_carros';
         
         await mongoose.connect(mongoURI, {
