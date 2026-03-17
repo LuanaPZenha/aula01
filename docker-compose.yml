@@ -1,23 +1,39 @@
 services:
-  # Serviço do Banco de Dados (MongoDB)
   mongodb:
-    image: mongo:latest
-    container_name: mongodb_aula
+    image: mongo:7
+    container_name: mongo_fullstack
     ports:
-      - "27017:27017"
+      - "27019:27017"
     volumes:
-      - mongo-data:/data/db
+      - mongo_data:/data/db
 
-  # Serviço da nossa API Node.js
+  mysql:
+    image: mysql:8
+    container_name: mysql_fullstack
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: loja_de_carros
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
   app:
     build: .
-    container_name: node_app_aula
+    container_name: node_app_fullstack
     ports:
       - "3000:3000"
     depends_on:
       - mongodb
+      - mysql
     environment:
-      - MONGO_URI=mongodb://mongodb:27017/LZDB
+      - MONGO_URI=mongodb://mongodb:27017/loja_de_carros
+      - MYSQL_HOST=mysql
+      - MYSQL_USER=root
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=loja_de_carros
 
 volumes:
-  mongo-data:
+  mongo_data:
+  mysql_data:
